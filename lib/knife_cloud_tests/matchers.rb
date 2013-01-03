@@ -3,7 +3,7 @@
 # Copyright:: Copyright (c) 2012 Opscode, Inc.
 
 require 'rspec'
-require File.expand_path(File.dirname(__FILE__) +'knifeutils')
+require 'knife_cloud_tests/knifeutils'
 
 RSpec::Matchers.define :have_outcome do |outcome_spec|
   match do |executed_shellout_command|
