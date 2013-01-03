@@ -12,6 +12,6 @@ Gemfile.lock
 *.pem
 
 #Ignore Knife factories, refer the sample
-knife_factory.rb
+lib/knife_cloud_tests/knife_factory.rb
 
 
