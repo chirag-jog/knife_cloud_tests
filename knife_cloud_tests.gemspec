@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "LICENSE", "README.md"
   ]
-  s.files = [Dir.glob("lib/**/*")]
-  s.require_paths = %w[lib]
+  s.files = `git ls-files`.split("\n")
   s.add_dependency(%q<rspec>)
   s.add_dependency(%q<rspec_junit_formatter>)
   s.add_dependency(%q<factory_girl>)
   s.add_dependency(%q<mixlib-shellout>)
+#  s.add_dependency(%q<nokogiri>)
 end
