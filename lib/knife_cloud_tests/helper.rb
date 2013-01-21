@@ -48,6 +48,8 @@ def match_status(expect_params)
   if "#{expected_status}" == "should fail"
     should_not have_outcome :status => 0
   elsif "#{expected_status}" == "should succeed" or "#{expected_status}" == "should return empty list"
-    should have_outcome :status => 0, :stdout => /#{expected_stdout}/, :stderr => /#{expected_stderr}/
+    should have_outcome :status => 0
   end
+    should have_outcome :stdout => /#{expected_stdout}/
+    should have_outcome :stderr => /#{expected_stderr}/
 end
