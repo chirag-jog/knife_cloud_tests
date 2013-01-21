@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "LICENSE", "README.md"
   ]
-  s.files = `git ls-files`.split("\n")
+  s.files = `git ls-files`.split("\n") + ["lib/knife_cloud_tests/knife_factory.rb"]
   s.add_dependency(%q<rspec>)
   s.add_dependency(%q<rspec_junit_formatter>)
   s.add_dependency(%q<factory_girl>)
