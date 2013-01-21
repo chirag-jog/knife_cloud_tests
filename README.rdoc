@@ -2,14 +2,29 @@
 Integration Tests for Knife cloud plugins using Rspec and FactoryGirl
 
 ==Description
-This package provides a framework to develop long running integration tests for the various knife cloud plugins. It uses Rspec for test case development while FactoryGirl to manage fixtures. The sample knife factory is show in lib/knife_cloud_tests/knife_factory_sample.rb
+This package provides a framework to develop long running integration tests for the various knife cloud plugins. It uses Rspec for test case development while FactoryGirl to manage fixtures. The main goal of this framework is to simplify development of integration tests which perform real API calls (and hence incur cost) to the Cloud services. The framework executes the knife command with all the parameters set as per the individual cloud providers' requirements.
+
+The main requirements for the successful execution of a knife command are:
+1. Valid knife.rb
+2. Valid Cloud Plugin Parameters
+3. Valid Cloud Credentials
+
+===Generating a Valid knife.rb
+The knife.rb is generated from a knife_factory. The sample knife factory is show in lib/knife_cloud_tests/knife_factory_sample.rb
+Create the knife_factory.rb (in lib/knife_cloud_tests) with valid values using the knife_factory_sample.rb.
+
+===Generating Valid Cloud Plugin Parameters
+Each cloud plugin should implement factories that generate the valid parameters. Example: https://github.com/opscode/knife-bluelock/tree/master/spec/integration/bluelock_factories.rb
+
+===Generating Valid Cloud Credentials
+Each cloud plugin should typically read such credentials from a properties file(YAML, XML etc) typically located in the spec/integration/properties folder. Also one should ensure that the properties folder is also added the .gitignore file to prevent committing secret data.
+
+==Understanding the Framework
+The framework (similar to chef-pedant) extends the ActiveSupport::Concern allowing the rspec tests to simply define the commands to be executed and match the results received as stdout, stderr and status code. The helper provide several utilities including generating the knife command, comparing expected results with those actually returned etc.
 
 ==Usage
-  Create the knife_factory.rb (in lib/knife_cloud_tests) with valid values using the knife_factory_sample.rb.
-
-  Build and Install the knife_cloud_tests gem.
-
-  Develop integration tests leveraging the framework. 
-  Reference: [Integration tests for knife-bluelock](https://github.com/opscode/knife-bluelock/tree/master/spec/integration)
-
+1.Create the knife_factory.rb (in lib/knife_cloud_tests) with valid values using the knife_factory_sample.rb.
+2.Build and Install the knife_cloud_tests gem.
+3.Develop integration tests leveraging the framework. Example: https://github.com/opscode/knife-bluelock/blob/master/spec/integration/bluelock_spec.rb
+4.Execute the test using rspec.
 
