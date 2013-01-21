@@ -41,14 +41,13 @@ def find_id(instance_name, line)
   end
 end
 
-def match_status(test_run_expect)
-  if "#{test_run_expect}" == "should fail"
+def match_status(expect_params)
+  expected_status = expect_params[:status]
+  expected_stdout = expect_params[:stdout]
+  expected_stderr = expect_params[:stderr]
+  if "#{expected_status}" == "should fail"
     should_not have_outcome :status => 0
-  elsif "#{test_run_expect}" == "should succeed"
-    should have_outcome :status => 0
-  elsif "#{test_run_expect}" == "should return empty list"
-    should have_outcome :status => 0
-  else
-    should have_outcome :status => 0
+  elsif "#{expected_status}" == "should succeed" or "#{expected_status}" == "should return empty list"
+    should have_outcome :status => 0, :stdout => /#{expected_stdout}/, :stderr => /#{expected_stderr}/
   end
 end
