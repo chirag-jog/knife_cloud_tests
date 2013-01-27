@@ -6,16 +6,15 @@ require 'active_support/concern'
 require 'mixlib/shellout'
 require 'factory_girl'
 module RSpec
-  module KnifeUtils    
+  module KnifeUtils
     extend ActiveSupport::Concern
-    included do      
+    included do
       subject { knife_run }
       let(:knife_run) { run command }
-      let(:command)   { fail 'Define let(:command) in the spec' }      
+      let(:command)   { fail 'Define let(:command) in the spec' }
       let(:grep_cmd) { "" }
-      let(:cmd_stdout) { @op }      
-      let(:rs_v2) { "" }
-
+      let(:cmd_stdout) { @op }
+      let(:timeout) { 1200 }
 
       # Our test repository for all knife commands.  Note that this is
       # relative to the top-level opscode-pedant directory.
@@ -28,17 +27,18 @@ module RSpec
       def load_knife_config()
         @knife_rb_path = FactoryGirl.build(:knifeconfig).generate_knife_config
       end
+
       # Convenience method for creating a Mixlib::ShellOut representation
       # of a knife command in our test repository
-      def shell_out_command(cmd, msg)        
-        cmd_local = "#{cmd}" + " -V" + "#{rs_v2}" + " -c #{knife_config}" + "#{grep_cmd}"
-        shell_out = Mixlib::ShellOut.new("#{cmd_local}")          
+      def shell_out_command(cmd, msg)
+        cmd_local = "#{cmd}" + " -c #{knife_config}" + "#{grep_cmd}"
+        shell_out = Mixlib::ShellOut.new("#{cmd_local}", :timeout => timeout)
         puts "#{msg}"
         puts "#{cmd_local}"
         @op = shell_out.tap(&:run_command).stdout
         puts "#{cmd_stdout}"
-        return shell_out                
-      end      
+        return shell_out
+      end
 
       # Convenience method for actually running a knife command in our
       # testing repository.  Returns the Mixlib::Shellout object ready for

@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email = "oss@opscode.com"
   s.licenses = ["Apache 2.0"]
   s.extra_rdoc_files = [
-    "LICENSE", "README.md"
+    "LICENSE", "README.rdoc"
   ]
   s.files = `git ls-files`.split("\n") + ["lib/knife_cloud_tests/knife_factory.rb"]
   s.add_dependency(%q<rspec>)

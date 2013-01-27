@@ -43,13 +43,23 @@ end
 
 def match_status(expect_params)
   expected_status = expect_params[:status]
+  expected_statuscode = expect_params[:statuscode] || 0
   expected_stdout = expect_params[:stdout]
   expected_stderr = expect_params[:stderr]
   if "#{expected_status}" == "should fail"
-    should_not have_outcome :status => 0
+    should_not have_outcome :status => expected_statuscode
   elsif "#{expected_status}" == "should succeed" or "#{expected_status}" == "should return empty list"
-    should have_outcome :status => 0
+    should have_outcome :status => expected_statuscode
   end
+
+  if expected_stdout.kind_of?(Array)
+    expected_stdout.each {|output| should have_outcome :stdout => /#{output}/ }
+  else
     should have_outcome :stdout => /#{expected_stdout}/
+  end
+  if expected_stderr.kind_of?(Array)
+    expected_stderr.each {|err| should have_outcome :stderr => /#{err}/ }
+  else
     should have_outcome :stderr => /#{expected_stderr}/
+  end
 end
